@@ -10,10 +10,12 @@ Open:
 """
 
 from pathlib import Path
+from forecasting import forecast_sales
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from dash import Dash, dcc, html, dash_table, Input, Output
 
 
@@ -183,6 +185,7 @@ app.layout = html.Div(
             children=[
                 dcc.Graph(id="sales_trend"),
                 dcc.Graph(id="profit_trend"),
+                dcc.Graph(id="forecast_chart"),
             ],
         ),
 
@@ -234,6 +237,7 @@ app.layout = html.Div(
     Output("discount_vs_profit", "figure"),
     Output("data_table", "data"),
     Output("data_table", "columns"),
+    Output("forecast_chart", "figure"),
     Input("date_range", "start_date"),
     Input("date_range", "end_date"),
     Input("category_dd", "value"),
@@ -241,8 +245,35 @@ app.layout = html.Div(
     Input("segment_dd", "value"),
 )
 def update_dashboard(start_date, end_date, categories, regions, segments):
-    filtered = df
+    filtered = df.copy()
+# Apply filters FIRST
+    if start_date:
+        filtered = filtered[filtered["Order Date"] >= pd.to_datetime(start_date)]
+    if end_date:
+        filtered = filtered[filtered["Order Date"] <= pd.to_datetime(end_date)]
+    if categories:
+        filtered = filtered[filtered["Category"].isin(categories)]
+    if regions:
+        filtered = filtered[filtered["Region"].isin(regions)]
+    if segments:
+        filtered = filtered[filtered["Segment"].isin(segments)]
 
+    # THEN forecast using filtered data
+    hist, fc = forecast_sales(filtered, periods=6)
+
+    fig_forecast = go.Figure()
+    fig_forecast.add_trace(go.Scatter(
+        x=hist.index, y=hist.values,
+        mode="lines", name="Actual Sales"
+    ))
+    fig_forecast.add_trace(go.Scatter(
+        x=fc.index, y=fc.values,
+        mode="lines", name="Forecast",
+        line=dict(dash="dash")
+    ))
+    fig_forecast.update_layout(title="Sales Forecast (Next 6 Months)")
+
+    
     if start_date:
         filtered = filtered[filtered["Order Date"] >= pd.to_datetime(start_date)]
     if end_date:
@@ -309,8 +340,10 @@ def update_dashboard(start_date, end_date, categories, regions, segments):
         fig_sales, fig_profit,
         fig_cat_profit, fig_cat_sales,
         fig_scatter,
-        data, columns
+        data, columns,
+        fig_forecast
     )
+
 
 
 if __name__ == "__main__":
