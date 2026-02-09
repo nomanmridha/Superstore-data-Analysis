@@ -258,21 +258,48 @@ def update_dashboard(start_date, end_date, categories, regions, segments):
     if segments:
         filtered = filtered[filtered["Segment"].isin(segments)]
 
-    # THEN forecast using filtered data
-    hist, fc = forecast_sales(filtered, periods=6)
+        # -----------------------------
+    # Sales Forecast + 95% CI
+    # -----------------------------
+    hist, fc, lower, upper, mape = forecast_sales(filtered, periods=6)
 
     fig_forecast = go.Figure()
+
+    # Actual history
     fig_forecast.add_trace(go.Scatter(
         x=hist.index, y=hist.values,
         mode="lines", name="Actual Sales"
     ))
+
+    # Forecast line
     fig_forecast.add_trace(go.Scatter(
         x=fc.index, y=fc.values,
-        mode="lines", name="Forecast",
+        mode="lines",
+        name="Forecast",
         line=dict(dash="dash")
     ))
-    fig_forecast.update_layout(title="Sales Forecast (Next 6 Months)")
 
+    # CI band (upper then lower with fill)
+    fig_forecast.add_trace(go.Scatter(
+        x=fc.index, y=upper.values,
+        mode="lines",
+        line=dict(width=0),
+        showlegend=False,
+        hoverinfo="skip"
+    ))
+
+    fig_forecast.add_trace(go.Scatter(
+        x=fc.index, y=lower.values,
+        mode="lines",
+        fill="tonexty",
+        line=dict(width=0),
+        name="95% CI",
+        hoverinfo="skip"
+    ))
+
+    fig_forecast.update_layout(
+        title=f"Sales Forecast (Next 6 Months) | MAPE: {mape:.2f}%"
+    )
     
     if start_date:
         filtered = filtered[filtered["Order Date"] >= pd.to_datetime(start_date)]
