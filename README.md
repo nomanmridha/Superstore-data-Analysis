@@ -95,7 +95,6 @@ The raw dataset underwent:
 - Duplicate removal
 - Missing value checks
 - Profit scaling correction (final validation)
-- Profit scaling correction
 - Aggregation consistency
 - Sales & Profit Totals
 - Processed dataset exported as `superstore_processed.csv`  👉 **[Processed Data](data/processed)**
@@ -105,7 +104,7 @@ The raw dataset underwent:
 ## Phase 3 — Exploratory Data Analysis (EDA)
 
 Notebook:  
-`notebooks/02_eda.ipynb`
+`notebooks/02_eda.ipynb`  👉 **[Exploratory data analysis](notebooks/02_eda.ipynb)**
 
 ### Monthly Sales Trend (2014–2017)
 
@@ -133,7 +132,7 @@ Key findings:
 # 🧠 Customer Segmentation (RFM + Clustering)
 
 Notebook:  
-`notebooks/03_rfm_analysis.ipynb`
+`notebooks/03_rfm_analysis.ipynb`  👉 **[Processed Data](data/processed)**
 
 RFM Metrics:
 - **Recency** – Days since last purchase  
@@ -163,7 +162,7 @@ Segments identified:
 # 📈 Forecasting & Validation
 
 Notebook:  
-`notebooks/04_forecasting.ipynb`
+`notebooks/04_forecasting.ipynb`  👉 **[Processed Data](data/processed)**
 
 Methods explored:
 - ARIMA-style modeling  
@@ -189,16 +188,16 @@ Final dashboard implementation includes:
 # 🖥️ Dashboard Evolution
 
 Initially developed:
-- `streamlit_app.py`
-- `test_app.py`
+- `streamlit_app.py`  👉 **[Processed Data](data/processed)**
+- `test_app.py`       👉 **[Processed Data](data/processed)**
 
 Due to frontend layout and rendering constraints, migrated to **Dash**.
 
 Final architecture:
-- `rebuild_processed.py`
-- `forecasting.py`
-- `rfm_model.py`
-- `dash_app.py`
+- `rebuild_processed.py`  👉 **[Processed Data](data/processed)**
+- `forecasting.py`        👉 **[Processed Data](data/processed)**
+- `rfm_model.py`          👉 **[Processed Data](data/processed)**
+- `dash_app.py`           👉 **[Processed Data](data/processed)**
 
 ---
 
