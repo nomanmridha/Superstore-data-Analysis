@@ -17,7 +17,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, dash_table, Input, Output
 
-from forecasting import forecast_metric, forecast_segment_metrics
+from forecasting import forecast_metric, forecast_segment_metrics, holdout_validation
+from rfm_model import compute_rfm, run_kmeans, profile_clusters, label_clusters
 
 
 # -----------------------------
@@ -260,6 +261,29 @@ app.layout = html.Div(
         html.Div(style={"height": "8px"}),
 
         dcc.Graph(id="discount_vs_profit"),
+# -------- Business Insights --------
+html.H3("Business Insights (filtered view)"),
+dcc.Markdown(id="business_insights", style={"backgroundColor": "#fafafa", "border": "1px solid #eee", "borderRadius": "10px", "padding": "10px"}),
+
+html.Div(style={"height": "8px"}),
+
+# -------- Customer Segmentation (RFM) --------
+html.H3("Customer Segmentation (RFM)"),
+html.Div(
+    style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "12px"},
+    children=[
+        dcc.Graph(id="rfm_cluster_chart"),
+        dash_table.DataTable(
+            id="rfm_table",
+            page_size=10,
+            style_table={"overflowX": "auto"},
+            style_cell={"fontSize": 12, "padding": "6px"},
+        ),
+    ],
+),
+html.Div(id="rfm_note", style={"marginTop": "6px", "color": "#666", "fontSize": 12}),
+
+html.Div(style={"height": "12px"}),
 
         # -------- Segment evaluation table --------
         html.H3("Segment evaluation (forecast KPIs)"),
@@ -405,13 +429,23 @@ def update_dashboard(start_date, end_date, categories, regions, segments, foreca
     forecast_sum = metrics.get("forecast_sum", np.nan)
     delta = forecast_sum - last6_actual_sum
 
+
     growth_pct = metrics.get("growth_pct", np.nan)
-    rmse = metrics.get("rmse", np.nan)
-    mape = metrics.get("mape", np.nan)
+
+    # Holdout validation (last 12 months) — used for RMSE/MAPE displayed on dashboard
+    hv = holdout_validation(filtered, value_col=metric_col, test_months=12)
+    rmse = hv.get("rmse", np.nan)
+    mape = hv.get("mape", np.nan)
+
+    # Fallback to seasonal backtest metrics if holdout not available
+    if pd.isna(rmse):
+        rmse = metrics.get("rmse", np.nan)
+    if pd.isna(mape):
+        mape = metrics.get("mape", np.nan)
 
     kpi_forecast_6m = _kpi_block("Forecast (Next 6M)", _format_int(forecast_sum))
     kpi_growth_6m = _kpi_block("Forecast Growth", _format_pct(growth_pct))
-    kpi_rmse = _kpi_block("RMSE (Holdout)", _format_int(rmse))
+    kpi_rmse = _kpi_block("RMSE (Holdout 12M)", _format_int(rmse))
     kpi_last6_actual = _kpi_block("Actual (Last 6M)", _format_int(last6_actual_sum))
     kpi_forecast_delta = _kpi_block("Forecast Δ (6M)", _format_int(delta))
 
@@ -448,6 +482,8 @@ def update_dashboard(start_date, end_date, categories, regions, segments, foreca
     )
 
     # -----------------------------
+    
+    # -----------------------------
     # Segment evaluation table
     # -----------------------------
     seg_data = []
@@ -459,21 +495,21 @@ def update_dashboard(start_date, end_date, categories, regions, segments, foreca
             group_col=forecast_groupby_value,
             value_col=metric_col,
             periods=6,
-            min_months=12,
+            min_months=6,
         )
+
         if not seg_df.empty:
             # nicer formatting
             show = seg_df.copy()
-            show["forecast_sum"] = show["forecast_sum"].round(2)
-            show["last6_actual_sum"] = show["last6_actual_sum"].round(2)
-            show["growth_pct"] = show["growth_pct"].round(2)
-            show["mape"] = show["mape"].round(2)
-            show["rmse"] = show["rmse"].round(2)
+            for c in ["forecast_sum", "last6_actual_sum", "growth_pct", "mape", "rmse"]:
+                if c in show.columns:
+                    show[c] = show[c].round(2)
 
             seg_data = show.to_dict("records")
             seg_columns = [{"name": c, "id": c} for c in show.columns]
-
-    # -----------------------------
+        else:
+            seg_data = [{"Note": "No segment KPI rows produced. Try broadening filters or choose a different grouping."}]
+            seg_columns = [{"name": "Note", "id": "Note"}]
     # Data table preview
     # -----------------------------
     preview = filtered.head(200).copy()
@@ -511,6 +547,111 @@ def update_dashboard(start_date, end_date, categories, regions, segments, foreca
         table_columns,
     )
 
+
+@app.callback(
+    Output("business_insights", "children"),
+    Input("date_range", "start_date"),
+    Input("date_range", "end_date"),
+    Input("category_dd", "value"),
+    Input("region_dd", "value"),
+    Input("segment_dd", "value"),
+)
+def update_business_insights(start_date, end_date, categories, regions, segments):
+    f = df.copy()
+    if start_date:
+        f = f[f["Order Date"] >= pd.to_datetime(start_date)]
+    if end_date:
+        f = f[f["Order Date"] <= pd.to_datetime(end_date)]
+    if categories:
+        f = f[f["Category"].isin(categories)]
+    if regions:
+        f = f[f["Region"].isin(regions)]
+    if segments:
+        f = f[f["Segment"].isin(segments)]
+
+    if f.empty:
+        return "No data available for current filters."
+
+    # Basic insights (lean, course-project friendly)
+    total_sales = f["Sales"].sum()
+    total_profit = f["Profit"].sum()
+    margin = (total_profit / total_sales * 100.0) if total_sales else np.nan
+
+    # top category by sales and profit
+    cat = f.groupby("Category", as_index=False).agg(Sales=("Sales", "sum"), Profit=("Profit", "sum"))
+    top_sales_cat = cat.sort_values("Sales", ascending=False).iloc[0]["Category"]
+    top_profit_cat = cat.sort_values("Profit", ascending=False).iloc[0]["Category"]
+
+    reg = f.groupby("Region", as_index=False).agg(Profit=("Profit", "sum")).sort_values("Profit", ascending=False)
+    top_region = reg.iloc[0]["Region"]
+
+    # discount effect quick indicator
+    corr = f[["Discount", "Profit"]].dropna().corr(numeric_only=True).iloc[0, 1]
+    corr_txt = "negative" if corr < -0.05 else ("positive" if corr > 0.05 else "weak/none")
+
+    bullets = [
+        f"**Total Sales:** {total_sales:,.0f} | **Total Profit:** {total_profit:,.0f} | **Margin:** {margin:.2f}%",
+        f"**Top Category (Sales):** {top_sales_cat} | **Top Category (Profit):** {top_profit_cat}",
+        f"**Most Profitable Region:** {top_region}",
+        f"**Discount vs Profit relationship:** {corr_txt} (corr = {corr:.2f})",
+        "Use these insights to prioritize profitable categories/regions and monitor discounting impacts.",
+    ]
+
+    return "\n".join([f"- {b}" for b in bullets])
+
+
+@app.callback(
+    Output("rfm_cluster_chart", "figure"),
+    Output("rfm_table", "data"),
+    Output("rfm_table", "columns"),
+    Output("rfm_note", "children"),
+    Input("date_range", "start_date"),
+    Input("date_range", "end_date"),
+    Input("category_dd", "value"),
+    Input("region_dd", "value"),
+    Input("segment_dd", "value"),
+)
+def update_rfm(start_date, end_date, categories, regions, segments):
+    f = df.copy()
+    if start_date:
+        f = f[f["Order Date"] >= pd.to_datetime(start_date)]
+    if end_date:
+        f = f[f["Order Date"] <= pd.to_datetime(end_date)]
+    if categories:
+        f = f[f["Category"].isin(categories)]
+    if regions:
+        f = f[f["Region"].isin(regions)]
+    if segments:
+        f = f[f["Segment"].isin(segments)]
+
+    empty_fig = go.Figure().update_layout(
+        title="RFM Clusters (k=4)",
+        xaxis_title="Cluster",
+        yaxis_title="Customers"
+    )
+
+    # Need enough customers for clustering to be meaningful
+    n_customers = f["Customer ID"].nunique()
+    if n_customers < 20:
+        note = f"RFM requires enough customers. Current filtered customers: {n_customers}. Broaden filters to see clusters."
+        return empty_fig, [], [], note
+
+    rfm = compute_rfm(f)
+    rfm = run_kmeans(rfm, k=4)
+    prof = profile_clusters(rfm)
+    prof = label_clusters(prof)
+
+    # Cluster size chart
+    counts = prof[["Customers"]].reset_index().rename(columns={"index": "Cluster"})
+    fig = px.bar(counts, x="Cluster", y="Customers", title="RFM Cluster Sizes (k=4)")
+
+    # Table data
+    show = prof.reset_index().rename(columns={"index": "Cluster"})
+    data = show.to_dict("records")
+    columns = [{"name": c, "id": c} for c in show.columns]
+
+    note = "Interpretation: lower Recency + higher Frequency/Monetary typically indicates higher-value customers (e.g., Champions)."
+    return fig, data, columns, note
 
 if __name__ == "__main__":
     app.run(debug=True, host="127.0.0.1", port=8050)

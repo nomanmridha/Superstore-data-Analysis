@@ -121,8 +121,13 @@ def forecast_segment_metrics(
     periods: int = 6,
     min_months: int = 12,
 ) -> pd.DataFrame:
-    """
-    Returns a table of per-segment forecast KPIs (MAPE/RMSE/Growth/Forecast Sum).
+    """Per-segment forecast KPIs (lean + robust).
+
+    Uses the same seasonal-naive logic as `forecast_metric` per segment.
+    Does **not** silently fail all rows: if a segment errors, it records status.
+
+    Columns:
+      - <group_col>, months, forecast_sum, last6_actual_sum, growth_pct, mape, rmse, status
     """
     if group_col not in df.columns:
         raise ValueError(f"Group column '{group_col}' not found in df.")
@@ -131,11 +136,22 @@ def forecast_segment_metrics(
 
     rows = []
     for g, gdf in df.groupby(group_col):
+        hist = _monthly_series(gdf, value_col=value_col)
+        if len(hist) < min_months:
+            rows.append({
+                group_col: g,
+                "months": int(len(hist)),
+                "forecast_sum": np.nan,
+                "last6_actual_sum": float(hist.tail(min(6, len(hist))).sum()) if len(hist) else np.nan,
+                "growth_pct": np.nan,
+                "mape": np.nan,
+                "rmse": np.nan,
+                "status": f"insufficient_history(<{min_months})",
+            })
+            continue
+
         try:
-            hist = _monthly_series(gdf, value_col=value_col)
-            if len(hist) < min_months:
-                continue
-            _, fc, _, _, metrics = forecast_metric(gdf, value_col=value_col, periods=periods)
+            _, _, _, _, metrics = forecast_metric(gdf, value_col=value_col, periods=periods)
             rows.append({
                 group_col: g,
                 "months": int(len(hist)),
@@ -144,13 +160,69 @@ def forecast_segment_metrics(
                 "growth_pct": float(metrics.get("growth_pct", np.nan)),
                 "mape": float(metrics.get("mape", np.nan)),
                 "rmse": float(metrics.get("rmse", np.nan)),
+                "status": "ok",
             })
-        except Exception:
-            continue
+        except Exception as e:
+            rows.append({
+                group_col: g,
+                "months": int(len(hist)),
+                "forecast_sum": np.nan,
+                "last6_actual_sum": float(hist.tail(min(6, len(hist))).sum()) if len(hist) else np.nan,
+                "growth_pct": np.nan,
+                "mape": np.nan,
+                "rmse": np.nan,
+                "status": f"error: {type(e).__name__}",
+            })
 
     out = pd.DataFrame(rows)
     if out.empty:
         return out
 
-    # Sort: largest forecast_sum first
-    return out.sort_values("forecast_sum", ascending=False).reset_index(drop=True)
+    # Sort: largest forecast_sum first (NaNs last)
+    return out.sort_values("forecast_sum", ascending=False, na_position="last").reset_index(drop=True)
+
+def holdout_validation(
+    df: pd.DataFrame,
+    value_col: str = "Sales",
+    test_months: int = 12,
+) -> dict:
+    """Simple 1-split holdout validation on monthly series.
+
+    Train: all but last `test_months` months
+    Test:  last `test_months` months
+    Model: seasonal-naive using train month-of-year means
+
+    Returns dict with: mae, rmse, mape, bias, train_months, test_months
+    """
+    hist = _monthly_series(df, value_col=value_col)
+
+    if len(hist) < (test_months + 6):
+        return {
+            "mae": np.nan,
+            "rmse": np.nan,
+            "mape": np.nan,
+            "bias": np.nan,
+            "train_months": int(max(len(hist) - test_months, 0)),
+            "test_months": int(min(test_months, len(hist))),
+        }
+
+    train = hist.iloc[:-test_months]
+    test = hist.iloc[-test_months:]
+
+    month_means = train.groupby(train.index.month).mean()
+    pred = np.array([float(month_means.loc[d.month]) for d in test.index], dtype=float)
+
+    y_true = test.values.astype(float)
+    mae = float(np.nanmean(np.abs(y_true - pred)))
+    rmse = _rmse(y_true, pred)
+    mape = _mape(y_true, pred)
+    bias = float(np.nanmean(pred - y_true))
+
+    return {
+        "mae": round(mae, 2),
+        "rmse": round(rmse, 2),
+        "mape": round(mape, 2),
+        "bias": round(bias, 2),
+        "train_months": int(len(train)),
+        "test_months": int(len(test)),
+    }
