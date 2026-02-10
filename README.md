@@ -1,5 +1,17 @@
 # 📊 Superstore Analytics Dashboard  
-*Business Intelligence + Forecasting + Customer Segmentation (RFM)*
+
+### Business Intelligence + Forecasting + Customer Segmentation (RFM)
+
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Dash](https://img.shields.io/badge/Dash-Plotly-black)
+![Pandas](https://img.shields.io/badge/Pandas-Analytics-purple)
+![KMeans](https://img.shields.io/badge/KMeans-Clustering-green)
+![Data Analysis](https://img.shields.io/badge/Data-Analysis-00B2A9?style=for-the-badge&logo=chart-line&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
+![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 **Superstore Sales Analytics** is an end-to-end Python project that analyzes a large retail dataset to uncover business insights, forecast demand, and segment customers for targeted strategy.  
 This project was completed as part of the **Advanced Analytics** course and delivers an interactive **Dash dashboard** that enables stakeholders to explore trends, evaluate forecast performance, and profile customer segments.
@@ -18,32 +30,6 @@ This project provides a **data pipeline, analytics models, and a user-friendly d
 
 ---
 
-## 📁 Repository Structure
-
-```
-Superstore-data-Analysis/
-├── app/
-│   ├── dash_app.py
-│   ├── forecasting.py
-│   ├── rfm_model.py
-│   ├── rebuild_processed.py
-├── data/
-│   ├── raw/
-│   │   └── superstore_clean.csv
-│   └── processed/
-│       └── superstore_processed.csv
-├── notebooks/
-│   ├── 01_data_loading_cleaning.ipynb
-│   ├── 02_eda.ipynb
-│   ├── 03_rfm_analysis.ipynb
-│   └── 04_forecasting.ipynb
-├── assets/
-│   └── dashboard_screenshots/
-├── slides/
-├── reports/
-├── README.md
-└── requirements.txt
-```
 
 ---
 
@@ -244,16 +230,51 @@ Showcase of key outputs:
 
 ---
 
-## 🧾 License
 
-This project is released under the **MIT License** (see LICENSE file).
+## 📁 Repository Structure
+
+```
+Superstore-data-Analysis/
+├── app/
+│   ├── dash_app.py
+│   ├── forecasting.py
+│   ├── rfm_model.py
+│   ├── rebuild_processed.py
+├── data/
+│   ├── raw/
+│   │   └── superstore_clean.csv
+│   └── processed/
+│       └── superstore_processed.csv
+├── notebooks/
+│   ├── 01_data_loading_cleaning.ipynb
+│   ├── 02_eda.ipynb
+│   ├── 03_rfm_analysis.ipynb
+│   └── 04_forecasting.ipynb
+├── assets/
+│   └── dashboard_screenshots/
+├── slides/
+├── reports/
+├── README.md
+└── requirements.txt
+```
+
+## 👤 Author
+**Course:** Advance Analytics (WiSe26)  
+**University:** Fachhochschule Südwestfalen  
+**Supervisor:** Prof. Dr. Christian Leubner  
+**Project Type:** Individual Research Project
+
+![FH Südwestfalen](https://img.shields.io/badge/FH-S%C3%BCdwestfalen-0083CC?style=for-the-badge&logo=university&logoColor=white)
+![Research Project](https://img.shields.io/badge/Research-Project-6A1B9A?style=for-the-badge&logo=graduation-cap&logoColor=white)
+
+## 🤝 Connect & Contact
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/md-abdullah-al-noman-333aa4155/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nomanmridha/)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:noman.hr.18@gmail.com)
+* **University:** FH Südwestfalen – Advanced Analytics
 
 ---
 
-## 📚 Acknowledgements
-
-- Kaggle Superstore dataset
-- Plotly & Dash libraries
-- Python analytics ecosystem
-
+📌 *This repository demonstrates how academic projects can be elevated to industry-ready analytics portfolios through strong documentation, business framing, and technical rigor.*
 
