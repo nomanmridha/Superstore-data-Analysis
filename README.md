@@ -13,8 +13,19 @@
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
+# 🎯 Project Overview
+
+This project transforms the **Superstore retail dataset** into a complete **Business Intelligence and Advanced Analytics Dashboard**.
 **Superstore Sales Analytics** is an end-to-end Python project that analyzes a large retail dataset to uncover business insights, forecast demand, and segment customers for targeted strategy.  
 This project was completed as part of the **Advanced Analytics** course and delivers an interactive **Dash dashboard** that enables stakeholders to explore trends, evaluate forecast performance, and profile customer segments.
+
+The objective was to:
+
+- Build a dynamic decision-support dashboard  
+- Forecast future sales and validate model performance  
+- Evaluate forecast KPIs across business segments  
+- Segment customers using RFM + clustering  
+- Generate actionable business insights
 
 ---
 
@@ -30,19 +41,25 @@ This project provides a **data pipeline, analytics models, and a user-friendly d
 
 ---
 
+# 📌 Data Source
+ 
+Kaggle Link:  👉 https://www.kaggle.com/datasets/vivek468/superstore-dataset-final  
 
 ---
 
 ## 🧰 Tech Stack
 
-| Feature | Tech |
-|--------|------|
-| Data Cleaning & EDA | Python, Pandas, NumPy |
-| Visualization | Plotly, Dash |
-| Forecasting | ARIMA, Holdout validation |
-| Customer Segmentation | RFM, KMeans (k=4) |
-| Interactive Dashboard | Dash (Plotly) |
-| Packaging & Requirements | venv, requirements.txt |
+| Feature | Technology |
+|----------|------------|
+| Data Cleaning | Pandas, NumPy |
+| EDA | Jupyter Notebook |
+| Forecasting | ARIMA-style + Holdout Validation |
+| Prototype Forecast | Prophet |
+| Customer Segmentation | RFM + KMeans |
+| Visualization | Plotly |
+| Dashboard | Dash |
+| Environment | Python 3.12 (venv312) |
+| Version Control | Git + GitHub |
 
 ---
 
