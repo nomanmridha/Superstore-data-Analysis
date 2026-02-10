@@ -2,16 +2,16 @@
 
 ### Business Intelligence + Forecasting + Customer Segmentation (RFM)
 
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![Dash](https://img.shields.io/badge/Dash-Plotly-black)
-![Pandas](https://img.shields.io/badge/Pandas-Analytics-purple)
-![KMeans](https://img.shields.io/badge/KMeans-Clustering-green)
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge)
+![Dash](https://img.shields.io/badge/Dash-Plotly-black?style=for-the-badge)
+![Pandas](https://img.shields.io/badge/Pandas-Analytics-purple?style=for-the-badge)
+![KMeans](https://img.shields.io/badge/KMeans-Clustering-green?style=for-the-badge)
 ![Data Analysis](https://img.shields.io/badge/Data-Analysis-00B2A9?style=for-the-badge&logo=chart-line&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
 ![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoftexcel&logoColor=white)
 ![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 # 🎯 Project Overview
 
