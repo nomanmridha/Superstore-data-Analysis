@@ -293,16 +293,17 @@ View:
 
 ---
 
-## 💡 Business Insights (Auto-Generated)
+# 💡 Business Insights
 
-The dashboard calculates insights based on filtered data:
-- Top performing categories & regions
-- Profit-discount relationships
-- Customer segment behavior
+The dashboard generates business insights such as:
 
-📌 **Business insights block**:
-<!-- asset: business_insights.png -->
-![Business Insights](assets/dashboard_screenshots/business_insights.png)
+- Top performing categories  
+- Most profitable region  
+- Discount-profit correlation  
+- High-risk customer segments  
+- Forecast growth expectations  
+
+This converts raw analytics into decision-support recommendations.
 
 ---
 
@@ -338,19 +339,27 @@ http://127.0.0.1:8050
 
 ---
 
-## 📊 Sample Screenshots
+# 📄 Exposé Alignment  👉 **[Dash Dashboard](Exposé.pdf)**
 
-Showcase of key outputs:
+This project fulfills the exposé objectives:
 
-| Feature | Preview |
-|--------|---------|
-| Forecast Chart | ![Forecast](assets/dashboard_screenshots/sales_forecast.png) |
-| Segment Eval (Region) | ![Region Eval](assets/dashboard_screenshots/segment_eval_region.png) |
-| RFM Cluster | ![RFM Clusters](assets/dashboard_screenshots/rfm_cluster_sizes.png) |
+- ✔ Business Intelligence Dashboard  
+- ✔ Forecasting with validation  
+- ✔ Customer Segmentation  
+- ✔ Decision Support System  
 
 ---
 
-## 📌 Limitations & Future Work
+# 🚀 Future Enhancements
+
+- Advanced SARIMA tuning  
+- Dynamic cluster validation  
+- Cloud deployment  
+- Inventory optimization integration  
+
+---
+
+## 📌 Limitations 
 
 - Forecast model uses seasonal-naive method — future work could integrate SARIMA/Prophet
 - RFM uses fixed k=4 — more dynamic cluster validation possible
@@ -359,7 +368,7 @@ Showcase of key outputs:
 ---
 
 
-## 📁 Repository Structure
+# 📂 Repository Structure
 
 ```
 Superstore-data-Analysis/
@@ -368,23 +377,27 @@ Superstore-data-Analysis/
 │   ├── forecasting.py
 │   ├── rfm_model.py
 │   ├── rebuild_processed.py
+│   ├── streamlit_app.py
+│   └── test_app.py
+├── assets/
+│   └── figures/
 ├── data/
 │   ├── raw/
-│   │   └── superstore_clean.csv
 │   └── processed/
-│       └── superstore_processed.csv
 ├── notebooks/
 │   ├── 01_data_loading_cleaning.ipynb
 │   ├── 02_eda.ipynb
 │   ├── 03_rfm_analysis.ipynb
 │   └── 04_forecasting.ipynb
-├── assets/
-│   └── dashboard_screenshots/
-├── slides/
 ├── reports/
+├── slides/
+├── Exposé.pdf
+├── LICENSE
 ├── README.md
 └── requirements.txt
 ```
+
+---
 
 ## 👤 Author
 **Course:** Advance Analytics (WiSe26)  
