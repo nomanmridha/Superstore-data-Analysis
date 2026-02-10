@@ -253,16 +253,20 @@ View:
 ## Segment Evaluation (Forecast KPIs)
 
 Evaluates forecast performance by:
-- Category  
-- Region  
-- Retail Segment  
+- Category
+![Category](assets/figures/Segment_evaluation_filtered_by_Category.png) 
+- Region
+![Region](assets/figures/Segment_evaluation_filtered_by_Region.png)
+- Retail Segment
+![Segment](assets/figures/Segment_evaluation_filtered_by_Segment.png)
 
 Outputs include:
 - forecast_sum  
 - last6_actual_sum  
 - growth_pct  
 - mape  
-- rmse  
+- rmse
+![Output](assets/figures/Evaluates_Forecast_Performance_outputs.png)
 
 ---
 
