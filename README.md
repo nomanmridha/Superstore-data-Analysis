@@ -307,6 +307,104 @@ This converts raw analytics into decision-support recommendations.
 
 ---
 
+# 📌 Managerial Recommendation
+Based on the analytical findings from the dashboard and segment evaluation: 
+
+## 1️⃣ Inventory & Demand Planning
+
+- The **Central region shows the lowest MAPE (~14.9%)**, indicating more stable and predictable demand.
+- The **East region shows higher MAPE (~24.6%)**, suggesting higher volatility.
+  
+**Recommendation:**
+- Use tighter inventory control strategies in the Central region.
+- Maintain safety stock buffers and dynamic forecasting adjustments for the East region.
+
+---
+
+## 2️⃣ Discount Strategy Optimization
+
+- Discount vs Profit analysis reveals a **negative correlation (~ -0.38)**.
+- Aggressive discounting reduces profitability significantly.
+
+**Recommendation:**
+- Limit excessive discounting on high-margin categories.
+- Apply targeted promotions specifically to **At-Risk** or **Lost** customer segments rather than broad discounts.
+
+---
+
+## 3️⃣ Customer Retention Strategy
+
+RFM segmentation identifies:
+
+- **Champions** (high frequency + high monetary value)
+- **Loyal Customers**
+- **Big Spenders**
+- **Lost / At Risk Customers**
+
+**Recommendation:**
+- Provide loyalty rewards, early-access promotions, and exclusive offers to Champions.
+- Implement reactivation campaigns (email promotions, targeted discounts) for Lost customers.
+- Maintain engagement programs for Loyal customers to prevent churn.
+
+---
+
+## 4️⃣ Category-Level Forecast Strategy
+
+Segment evaluation tables show varying RMSE and MAPE values across categories.
+
+**Recommendation:**
+- Allocate marketing budgets toward categories with higher forecast stability.
+- Apply enhanced forecasting models to categories with higher error metrics.
+- Align inventory planning with forecast confidence levels.
+
+---
+
+# ⚠️ Model Limitations
+
+While the dashboard provides strong analytical insights, several limitations must be acknowledged:
+
+## 1️⃣ Forecasting Model Simplification
+
+- The implemented ARIMA-style approach prioritizes interpretability.
+- Advanced SARIMA tuning, hyperparameter optimization, or external regressors were not incorporated.
+
+---
+
+## 2️⃣ Static Clustering (k = 4)
+
+- KMeans clustering uses a fixed k = 4 for interpretability and clarity.
+- Dynamic cluster optimization methods (e.g., silhouette score tuning) could further refine segmentation.
+
+---
+
+## 3️⃣ No External Variables Included
+
+- Forecasting relies solely on historical sales data.
+- External drivers such as macroeconomic factors, holidays, promotions, or competitor actions were not modeled.
+
+---
+
+## 4️⃣ Limited Time Horizon
+
+- Dataset covers 2014–2017 only.
+- Long-term structural shifts beyond this period are not captured.
+
+---
+
+# 📊 Quantitative Interpretation Example
+
+From segment-level forecast evaluation:
+
+> **Central region shows the lowest MAPE (~14.9%) compared to East (~24.6%)**, indicating that Central demand is more predictable and stable.
+
+Implications:
+
+- Forecasts for Central can be relied upon with higher confidence.
+- East region may require enhanced modeling techniques or additional explanatory variables.
+- Business planners should differentiate inventory strategies by region based on forecast reliability.
+
+---
+
 ## 📝 How to Run
 
 1. Clone the repo:
