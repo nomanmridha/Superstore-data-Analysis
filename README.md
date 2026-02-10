@@ -132,7 +132,7 @@ Key findings:
 # 🧠 Customer Segmentation (RFM + Clustering)
 
 Notebook:  
-`notebooks/03_rfm_analysis.ipynb`  👉 **[Processed Data](data/processed)**
+`notebooks/03_rfm_analysis.ipynb`  👉 **[RFM + Clustering](notebooks/03_rfm_analysis.ipynb)**
 
 RFM Metrics:
 - **Recency** – Days since last purchase  
@@ -162,7 +162,7 @@ Segments identified:
 # 📈 Forecasting & Validation
 
 Notebook:  
-`notebooks/04_forecasting.ipynb`  👉 **[Processed Data](data/processed)**
+`notebooks/04_forecasting.ipynb`  👉 **[Forecasting](notebooks/04_forecasting.ipynb)**
 
 Methods explored:
 - ARIMA-style modeling  
@@ -188,16 +188,16 @@ Final dashboard implementation includes:
 # 🖥️ Dashboard Evolution
 
 Initially developed:
-- `streamlit_app.py`  👉 **[Processed Data](data/processed)**
-- `test_app.py`       👉 **[Processed Data](data/processed)**
+- `streamlit_app.py`  👉 **[Streamlit](app/streamlit_app.py)**
+- `test_app.py`       👉 **[Streamlit Test](app/test_app.py)**
 
 Due to frontend layout and rendering constraints, migrated to **Dash**.
 
 Final architecture:
-- `rebuild_processed.py`  👉 **[Processed Data](data/processed)**
-- `forecasting.py`        👉 **[Processed Data](data/processed)**
-- `rfm_model.py`          👉 **[Processed Data](data/processed)**
-- `dash_app.py`           👉 **[Processed Data](data/processed)**
+- `rebuild_processed.py`  👉 **[Rebuilding](app/rebuild_processed.py)**
+- `forecasting.py`        👉 **[Forecasting](app/forecasting.py)**
+- `rfm_model.py`          👉 **[RFM Model](app/rfm_model.py)**
+- `dash_app.py`           👉 **[Dash Dashboard](app/dash_app.py)**
 
 ---
 
@@ -207,7 +207,7 @@ Final architecture:
 
 ---
 
-### 1) **Key Business KPIs**
+### **Key Business KPIs**
 
 Displays:
 - Total Sales
@@ -219,72 +219,73 @@ Displays:
 - Forecast Growth %
 - RMSE (Holdout 12M)
 - Actual vs Forecast delta
-
-📌 **Dashboard top KPIs**:
-<!-- asset: dashboard_kpis.png -->
-![Dashboard KPIs](assets/dashboard_screenshots/dashboard_kpis.png)
-
+  
 ---
 
-### 2) **Time Series Trend Analysis**
+### **Time Series Trend Analysis Dashboard**
 
 View:
 - Monthly Sales Trend
 - Monthly Profit Trend
-
-📌 **Trend charts**:
-<!-- asset: monthly_sales_trend.png -->
-![Monthly Sales Trend](assets/dashboard_screenshots/monthly_sales_trend.png)
-
----
-
-### 3) **Forecasting**
-
-Your dashboard shows:
-- **Sales Forecast** for the next 6 months
-- **MAPE (%)** in the title
-- Confidence intervals
-
-📌 **Forecast preview**:
-<!-- asset: sales_forecast.png -->
-![Sales Forecast](assets/dashboard_screenshots/sales_forecast.png)
+  
+![Monthly Sales Dashboard](assets/figures/Monthly_Sales_Trend_Dashboard.png)
+![Monthly Profit Dashboard](assets/figures/Monthly_Profit_Trend_Dashboard.png)
 
 ---
 
-### 4) **Segment Evaluation (Forecast KPIs)**
+## Category Performance
 
-Analyze forecast performance by:
-- Category
-- Region
-- Retail Segment
+View:
+- Sales by Category
+- Profit by Category
 
-📌 **Example Segment evaluation (Category)**:
-<!-- asset: segment_eval_category.png -->
-![Segment Eval - Category](assets/dashboard_screenshots/segment_eval_category.png)
+![Sales by Category](assets/figures/Sales_by_Category_Dashboard.png)
+![Profit by Category](assets/figures/Profit_graph_by_category_Dashboard.png)
 
 ---
 
-## 🧠 Customer Segmentation (RFM + Clustering)
+## Discount Analysis (Dashboard)
 
-Using Recency-Frequency-Monetary (RFM) analysis:
+![Discount vs Profit Sampled](assets/figures/Discount_vs_profit_sampled_Dashboard_graph.png)
 
-1) **Recency** — Days since last purchase  
-2) **Frequency** — Number of orders  
-3) **Monetary** — Total sales value  
+---
 
-Clustering (k=4) segments customers into:
-- Champions
-- Loyal
-- At Risk
-- Big Spenders
+## Segment Evaluation (Forecast KPIs)
 
-📌 **RFM cluster sizes**:
-<!-- asset: rfm_cluster_sizes.png -->
-![RFM Cluster Sizes](assets/dashboard_screenshots/rfm_cluster_sizes.png)
+Evaluates forecast performance by:
+- Category  
+- Region  
+- Retail Segment  
 
-📌 **RFM profile table**:
-<!-- asset: rfm_profile_table.png -->
-![RFM Profile Table](assets/dashboard_screenshots/rfm_profile_table.png)
+Outputs include:
+- forecast_sum  
+- last6_actual_sum  
+- growth_pct  
+- mape  
+- rmse  
+
+---
+
+## Customer Segmentation Dashboard
+
+![RFM Dashboard Graph](assets/figures/Customer_Segmentation_RFM_dashboard_graph.png)
+
+Displays:
+- Cluster size distribution  
+- RFM profiling table  
+- Segment labeling  
+
+---
+
+## Segment-Specific Forecast Examples
+
+View:
+- Champion Forecast
+![Champion Forecast](assets/figures/Champion_Forecast.png)
+
+View:
+- Loyal Forecast
+![Loyal Forecast](assets/figures/Loyal_Forecast.png)
 
 ---
 
