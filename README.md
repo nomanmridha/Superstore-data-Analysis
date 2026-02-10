@@ -63,41 +63,148 @@ Kaggle Link:  👉 https://www.kaggle.com/datasets/vivek468/superstore-dataset-f
 
 ---
 
-## 🚀 Project Workflow
+## 🚀 Project Journey (How It Evolved)
+This project evolved through structured analytical stages:
 
-### 1. Dataset Source
+## Phase 1 — Raw Data Exploration
 
-The dataset is based on the **Superstore sales dataset** (originally from Kaggle / internal business data).  
-It contains sales, profit, discount, customer, order, and segmentation information.
+We began with loading and inspecting the raw dataset.
 
-📌 **Raw dataset preview**:
-<!-- asset: raw data preview image -->
-![Raw dataset preview](assets/dashboard_screenshots/raw_dataset_preview.png)
+![Raw Dataset Preview](assets/figures/Raw_dataset.png)
+
+Notebook:  
+`notebooks/01_data_loading_cleaning.ipynb`  👉 **[Data cleaning](notebooks/01_data_loading_cleaning.ipynb)**
+
+Tasks performed:
+- Schema inspection  
+- Data type corrections  
+- Missing value validation  
+- Duplicate checks  
+- Date parsing  
 
 ---
 
-### 2. Data Cleaning & Preparation
+## Phase 2 — Data Cleaning & Processed Dataset
+
+After cleaning and transformation:
+
+![Cleaned Dataset Preview](assets/figures/Cleaned_Dataset.png)
 
 The raw dataset underwent:
 - Datatype conversion (dates)
 - Duplicate removal
 - Missing value checks
 - Profit scaling correction (final validation)
-- Processed dataset exported as `superstore_processed.csv`
-
-📌 **Cleaned dataset preview**:
-<!-- asset: processed data preview image -->
-![Processed dataset preview](assets/dashboard_screenshots/processed_dataset_preview.png)
-
-Notebooks:
-- `01_data_loading_cleaning.ipynb`
-- `02_eda.ipynb`
+- Profit scaling correction
+- Aggregation consistency
+- Sales & Profit Totals
+- Processed dataset exported as `superstore_processed.csv`  👉 **[Processed Data](data/processed)**
 
 ---
 
-## 📈 Interactive Dashboard Features
+## Phase 3 — Exploratory Data Analysis (EDA)
 
-The core product of this project is an **interactive dashboard** built with Dash that includes:
+Notebook:  
+`notebooks/02_eda.ipynb`
+
+### Monthly Sales Trend (2014–2017)
+
+![Monthly Sales Trend](assets/figures/Monthly_Sales_Trend_(2014-2017).png)
+
+### Monthly Profit Trend (2014–2017)
+
+![Monthly Profit Trend](assets/figures/Monthly_Profit_Trend_(2014-2017).png)
+
+### Sales vs Profit Over Time
+
+![Sales vs Profit](assets/figures/Sales_vs_Profit_Over_time_(2014-2017).png)
+
+### Discount vs Profit Relationship
+
+![Discount vs Profit](assets/figures/Discount_vs_Profit.png)
+
+Key findings:
+- Discount negatively impacts profit  
+- Clear seasonal sales patterns  
+- Performance differences across categories  
+
+---
+
+# 🧠 Customer Segmentation (RFM + Clustering)
+
+Notebook:  
+`notebooks/03_rfm_analysis.ipynb`
+
+RFM Metrics:
+- **Recency** – Days since last purchase  
+- **Frequency** – Number of orders  
+- **Monetary** – Total purchase value  
+
+### RFM Visualizations
+
+![Recency vs Frequency](assets/figures/Customer_Segments_Recency_vs_Frequency.png)
+![Frequency vs Monetary](assets/figures/Customer_Segments_Frequency_vs_Monetary.png)
+![Discount vs Profit - Customers](assets/figures/Customer_Segments_Discount_vs_Profit.png)
+
+### Optimal K Determination
+
+![Elbow Method](assets/figures/Elbow_Method_for_Optimal_K.png)
+
+Final model: **KMeans (k = 4)**
+
+Segments identified:
+- Champions  
+- Loyal Customers  
+- Big Spenders  
+- Lost / At Risk  
+
+---
+
+# 📈 Forecasting & Validation
+
+Notebook:  
+`notebooks/04_forecasting.ipynb`
+
+Methods explored:
+- ARIMA-style modeling  
+- Prophet prototype  
+
+![Prophet Forecast](assets/figures/Sales_forecast_using_prophet.png)
+
+Final dashboard implementation includes:
+- 6-month forecast  
+- 12-month holdout validation  
+- RMSE & MAPE metrics  
+
+### Sales Forecast with MAPE
+
+![Sales Forecast](assets/figures/Sales_Forecast_next_6_month_with_MAPE.png)
+
+### MAPE Metric
+
+![MAPE](assets/figures/mape.png)
+
+---
+
+# 🖥️ Dashboard Evolution
+
+Initially developed:
+- `streamlit_app.py`
+- `test_app.py`
+
+Due to frontend layout and rendering constraints, migrated to **Dash**.
+
+Final architecture:
+- `rebuild_processed.py`
+- `forecasting.py`
+- `rfm_model.py`
+- `dash_app.py`
+
+---
+
+# 📊 Final Dashboard Preview
+
+![Dashboard Final Preview](assets/figures/Dashboard_final_Preview.png)
 
 ---
 
