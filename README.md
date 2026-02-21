@@ -448,11 +448,7 @@ This project fulfills the exposé objectives:
 
 ---
 
-# Seminar Report
-
-The complete academic seminar report for this project is available below.
-
-📄 👉  **[Download Full Seminar Report](Seminar Report.pdf)**
+# Seminar Report   👉  **[Download Full Seminar Report](Seminar_Report.pdf)**
 
 ## Report Overview
 
@@ -480,14 +476,6 @@ Profit Margin | 11.80% |
 - Dynamic cluster validation  
 - Cloud deployment  
 - Inventory optimization integration  
-
----
-
-## 📌 Limitations 
-
-- Forecast model uses seasonal-naive method — future work could integrate SARIMA/Prophet
-- RFM uses fixed k=4 — more dynamic cluster validation possible
-- Additional filters (product, store) could enhance analysis
 
 ---
 
