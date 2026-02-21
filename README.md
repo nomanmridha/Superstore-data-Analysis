@@ -265,7 +265,7 @@ Outputs include:
 - last6_actual_sum  
 - growth_pct  
 - mape  
-- rmse
+- rmse  
 ![Output](assets/figures/Evaluates_Forecast_Performance_outputs.png)
 
 ---
@@ -448,6 +448,32 @@ This project fulfills the exposé objectives:
 
 ---
 
+# Seminar Report
+
+The complete academic seminar report for this project is available below.
+
+📄 👉  **[Download Full Seminar Report](Seminar Report.pdf)**
+
+## Report Overview
+
+This report presents the full implementation of a Business Intelligence Dashboard integrating:
+
+• Descriptive analytics  
+• Sales forecasting using Prophet  
+• Customer segmentation using RFM and K-Means  
+• Interactive visualization using Plotly Dash  
+
+## Key Results
+
+| Component | Result |
+|---------|--------|
+Forecast Accuracy | MAPE: 28.88% |
+Segmentation | 4 customer clusters |
+Total Sales | $1.32M |
+Profit Margin | 11.80% |
+
+---
+
 # 🚀 Future Enhancements
 
 - Advanced SARIMA tuning  
@@ -487,9 +513,8 @@ Superstore-data-Analysis/
 │   ├── 02_eda.ipynb
 │   ├── 03_rfm_analysis.ipynb
 │   └── 04_forecasting.ipynb
-├── reports/
-├── slides/
 ├── Exposé.pdf
+├── Seminar Report of the Project.pdf
 ├── LICENSE
 ├── README.md
 └── requirements.txt
